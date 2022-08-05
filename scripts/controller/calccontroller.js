@@ -1,6 +1,6 @@
-class CalcController{
+class CalcController    {
 
-    constructor(){
+    constructor()   {
 
         this._operation = [];
       
@@ -20,7 +20,7 @@ class CalcController{
 
     }
 
-    inicialize(){
+    inicialize()    {
         
         this.setDisplayDateTime();
 
@@ -32,7 +32,7 @@ class CalcController{
 
     }
 
-    addEventListenerAll(element, events, fn){
+    addEventListenerAll(element, events, fn)    {
 
         events.split(" ").forEach(event => {
 
@@ -42,13 +42,13 @@ class CalcController{
 
     }
 
-    clearAll(){
+    clearAll()  {
     
         this._operation = [];
 
     }
 
-    clearEntry(){
+    clearEntry()    {
 
         this._operation.pop();
 
@@ -60,53 +60,105 @@ class CalcController{
 
     }
 
-    getLastOperation(){
+    getLastOperation()  {
 
-        return this._operation[this._operation.length-1];
+        return this._operation[this._operation.length - 1];
 
     }
     
-    isOperator(value){
+    isOperator(value)   {
 
-        return (["+", "-", "*", "%", "/"].indexOf(value) > -1);
+        return (["+", "-", "*", "%", "/"].indexOf(value) > - 1);
  
     }
     
-    addOperation(value){
+    pushOperation(value)    {
 
-        console.log("A", isNaN(this.getLastOperation()));
+        this._operation.push(value);
+
+        if (this._operation.length > 3) {
+
+            this.calc();
+
+        }
+
+    }
+
+    calc()  {
+
+        let last = this._operation.pop();
+
+        let result = eval(this._operation.join(''));
+
+        this._operation = [result, last];
+
+        this.setLastNumberToDisplay();
+
+    }
+
+    setLastNumberToDisplay()    {
+
+        let lastNumber;
+
+        for (let i = this._operation.length - 1; i >= 0; i--)   {
+
+            if (!this.isOperator(this._operation[i]))   {
+
+                lastNumber = this._operation[i]; break;
+
+            }
+
+        }
+
+        this.displayCalc = lastNumber;
+
+    }
+
+    addOperation(value) {
 
         if (isNaN(this.getLastOperation())) {
           
             if (this.isOperator(value)) {
 
-                this._setLastOperation(value);
+                this.setLastOperation(value);
 
             }
 
             else if(isNaN(value))  {
 
-                //Outra coisa
-                console.log(value);
+                console.log('Outra coisa',value);
                 
             }
 
             else {
 
-                this._operation.push(value);
+                this.pushOperation(value);
+
+                this.setLastNumberToDisplay();
 
             }
 
     } 
         
         else {
-           
-            let newValue = this.getLastOperation().toString() + value.toString();
-           
-            this.setLastOperation(parseInt(newValue));
-        }
 
-        console.log(this._operation);
+            if (this.isOperator(value)) {
+
+                this.pushOperation(value);
+
+            }
+
+            else {
+
+                let newValue = this.getLastOperation().toString() + value.toString();
+           
+                this.setLastOperation(parseInt(newValue));
+
+                this.setLastNumberToDisplay();
+
+            }
+       
+        }
   
     }
 
