@@ -1,4 +1,6 @@
-This is my first project programming javascript.
+This is my first project programming javascript. To read the changes in coding made by me, open the "scripts" folder.
+
+
 Guided project by: Hcode Treinamentos
 
 # Calculadora JavaScript
